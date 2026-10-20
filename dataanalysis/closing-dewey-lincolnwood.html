@@ -656,6 +656,242 @@ details.more>summary{font-size:16px}
   <div class="chart" id="tenyr"></div>
   <p class="small col" style="margin-top:8px">Four paths for Dewey + Lincolnwood, in today's dollars. The yearly operating budget and the building repair bill are separate pots of money, so they're shown side by side, not added. Yearly savings are the net figures from the section above; repairs avoided are the $23.5M in the 2026 Facility Master Plan. <a class="cite" href="#r1">[1]</a> <a class="cite" href="#r2">[2]</a></p>
 
+<style>
+:root{--w-cls:#184f95;--w-kin:#3987e5;--w-spare:#3987e5;--w-svc:#86b6ef;--w-sg:#b7d3f6;--w-spc:#a3aeb7;--w-miss:#d62c2c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--w-cls:#b7d3f6;--w-kin:#6da7ec;--w-spare:#6da7ec;--w-svc:#2a6fc4;--w-sg:#184f95;--w-spc:#566672;--w-miss:#f0605a}}
+:root[data-theme="dark"]{--w-cls:#b7d3f6;--w-kin:#6da7ec;--w-spare:#6da7ec;--w-svc:#2a6fc4;--w-sg:#184f95;--w-spc:#566672;--w-miss:#f0605a}
+.waffles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:14px 0 6px}
+.w-card{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.w-card.w-closed{border-style:dashed}
+.w-card.w-closed .w-grid{opacity:.45}
+.w-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.w-head h4{font:700 16px/1.1 var(--display);margin:0}
+.w-stat{font:14px/1.35 var(--display)}
+.w-sum{display:flex;align-items:baseline;gap:4px 10px;flex-wrap:wrap}
+.w-big{font:800 18px/1 var(--display);text-transform:uppercase;letter-spacing:.03em}
+.w-big b{font-size:40px;letter-spacing:-.02em;margin-right:4px}
+.w-big.w-low{color:var(--bad)} .w-big.w-ok{color:var(--good)}
+.w-why{font:500 12.5px var(--mono);color:var(--muted)}
+.w-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;max-width:220px}
+.w-grid i,.w-legend i{display:block;aspect-ratio:1;border-radius:2px;background:var(--w-cls)}
+.w-grid i:hover{outline:2px solid var(--ink);outline-offset:0}
+i.w-cls{background:var(--w-cls)} i.w-kin{background:var(--w-kin)} i.w-svc{background:var(--w-svc)}
+i.w-sg{background:var(--w-sg)} i.w-spc{background:var(--w-spc)}
+i.w-miss{background:linear-gradient(45deg,transparent calc(50% - 1px),#000 calc(50% - 1px),#000 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(-45deg,transparent calc(50% - 1px),#000 calc(50% - 1px),#000 calc(50% + 1px),transparent calc(50% + 1px)),var(--w-miss)}
+i.w-spare{background:transparent;box-shadow:inset 0 0 0 2px var(--w-spare)}
+.w-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font:12.5px var(--mono);color:var(--muted)}
+.w-legend span{display:inline-flex;align-items:center;gap:6px}
+.w-legend i{width:12px;height:12px}
+.w-assume{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;max-width:820px}
+.w-assume h4{font:700 15px var(--display);margin:0 0 6px}
+.w-assume ol{margin:0;padding-left:20px;font-size:15px;line-height:1.5;display:flex;flex-direction:column;gap:4px}
+.w-assume b.v{font-family:var(--mono);font-weight:500;background:var(--accent-soft);padding:0 4px;border-radius:3px}
+.w-ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px 22px;margin:14px 0 4px;align-items:end}
+.w-ctls label.rng{display:flex;flex-direction:column;gap:6px;min-width:0}
+.w-ctls label.rng>span{font:500 11px/1.3 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.w-ctls label.rng output{font:600 14px var(--mono);color:var(--ink);letter-spacing:0;text-transform:none}
+.w-ctls input[type=range]{width:100%;accent-color:var(--accent)}
+.w-ctls input[type=range]:disabled{opacity:.45}
+.w-ctls label.chk{display:flex;gap:8px;align-items:flex-start;font:14px/1.35 var(--display)}
+.w-ctls input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;margin:1px 0 0;flex:none}
+.w-presets{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.w-presets .preset[aria-pressed="true"]{background:var(--accent);color:var(--paper);border-style:solid}
+.w-total{font:700 20px/1.3 var(--display);margin:6px 0 0}
+.w-total .bad{color:var(--bad)} .w-total .ok{color:var(--good)}
+</style>
+<div id="roomwaffles" style="margin-top:26px">
+  <div class="col">
+  <h3 style="margin-bottom:6px">Every room in the K-5 buildings, and where pull-out services would go</h3>
+  <p>Each square is one room on the district's October 2026 room sheet, colored by what the sheet says it is. Hover a square for the room number, name and size. Red squares with an X are rooms a school needs in 2027-28 and doesn't have. <a class="cite" href="#r30">[30]</a></p>
+  <p id="w-lede"></p>
+  <p id="w-classes"></p>
+  </div>
+
+  <div class="w-assume" id="w-assume">
+    <h4>What goes into these numbers</h4>
+    <ol>
+      <li><b>Special education and related services: our planning rule.</b> Illinois sets no room standard for these. Each building needs <b class="v" data-v="fixed"></b> fixed service rooms (speech-language, OT/PT/sensory, social work/psychology), plus one resource room per <b class="v" data-v="iep"></b> students with IEPs, rounded up.</li>
+      <li id="w-el-li"></li>
+      <li><b>Students with IEPs and English learners.</b> Counts come from the district's October 1, 2026 enrollment dashboard. Students who stay keep their school's rates. Students arriving from Dewey and Lincolnwood are assumed to have those two schools' combined rates: 17.4% with IEPs and 8.4% English learners.</li>
+      <li><b>2027-28 enrollment</b> is the district's proposed FY28 utilization table. Arriving students are spread evenly across grades K-5.</li>
+      <li><b>Classrooms needed</b> are 2027-28 classes at <b class="v" data-v="k2"></b> students in K-2 and <b class="v" data-v="g35"></b> in grades 3-5, the class-size goals in the teachers' contract. <a class="cite" href="#r26">[26]</a> A grade keeps at least as many classes as it has this year, since schools rarely combine classes from one year to the next.</li>
+      <li><b>Pull-out spaces a school has</b> are its small-group rooms, the special education and sensory rooms the sheet counts as classrooms, and <span data-v="spare"></span>. Each room counts as one space whatever its size. Art, music, STEM, offices, libraries and hallways don't count. If a school runs out of classrooms, a class takes a small-group room first.</li>
+      <li><b>Art and music.</b> <span id="w-spec-li"></span></li>
+      <li><b>What research and professional standards say.</b> We found no research-based standard for how many rooms a school needs for pull-out services; facility guides say only that these rooms should be near classrooms, can be smaller than a classroom, and must be equal in quality to general-education space. The staffing standards that exist are caseloads, not rooms: Illinois caps a speech-language pathologist's caseload at 60 students and requires districts to set workload limits for special educators <a class="cite" href="#r32">[32]</a>; national associations recommend one school psychologist per 500 students and one school social worker per 250 <a class="cite" href="#r33">[33]</a>; and ASHA recommends sizing speech caseloads by workload rather than a fixed number (its 2022 survey's median school caseload was 48) <a class="cite" href="#r34">[34]</a>. Each provider needs a place to work with students, which is why the rule starts with fixed service rooms for speech, OT/PT and social work or psychology.</li>
+      <li><b>Not modeled:</b> programs that move with the closures (Dewey's dual-language strand to Lincoln, Lincolnwood's STEP program to Orrington) or a self-contained special education class, each of which needs a full classroom. The sheet lists no small-group rooms for Foster*, so its count may be low. King Arts (K-8 magnet) is left out.</li>
+    </ol>
+  </div>
+
+  <div class="w-ctls" id="w-ctls">
+    <div class="w-presets" style="grid-column:1/-1"><span class="small">Start from:</span>
+      <button type="button" class="preset" id="w-p-ours" aria-pressed="true">Our rule (3 + 1 per 20 IEPs)</button>
+      <button type="button" class="preset" id="w-p-light" aria-pressed="false">Lighter rule (2 + 1 per 30 IEPs)</button>
+    </div>
+    <label class="rng" for="w-fixed"><span>Fixed service rooms per school <output id="w-fixed-o"></output></span><input type="range" id="w-fixed" min="0" max="5" step="1" value="3"></label>
+    <label class="rng" for="w-iep"><span>Students with IEPs per resource room <output id="w-iep-o"></output></span><input type="range" id="w-iep" min="10" max="50" step="5" value="20"></label>
+        <label class="chk" for="w-ilel"><input type="checkbox" id="w-ilel" checked> Hold English learner rooms to the Illinois standard (90% of class size)</label>
+    <label class="rng" for="w-k2"><span>Class size, K-2 <output id="w-k2-o"></output></span><input type="range" id="w-k2" min="16" max="28" step="1" value="23"></label>
+    <label class="rng" for="w-g35"><span>Class size, grades 3-5 <output id="w-g35-o"></output></span><input type="range" id="w-g35" min="16" max="30" step="1" value="25"></label>
+    <label class="chk" for="w-usespare"><input type="checkbox" id="w-usespare" checked> Count spare classrooms as pull-out space</label>
+    <label class="chk" for="w-spec"><input type="checkbox" id="w-spec" checked> Expect an art room and a music room at every school</label>
+  </div>
+  <p class="w-total" id="w-total" aria-live="polite"></p>
+
+  <div class="w-legend" aria-label="Room types">
+    <span><i class="w-cls"></i>Classroom</span><span><i class="w-kin"></i>Kindergarten</span>
+    <span><i class="w-spare"></i>Spare classroom in 2027-28</span><span><i class="w-svc"></i>Special ed / sensory (counted as classroom)</span>
+    <span><i class="w-sg"></i>Small-group room</span><span><i class="w-spc"></i>Specials (art, music, STEM…)</span>
+    <span><i class="w-miss"></i>Short: a room the school needs but doesn't have</span>
+  </div>
+  <div class="waffles" id="w-cards"></div>
+  <div class="tbl" style="max-width:820px;margin-top:12px"><table class="bldg"><thead><tr><th>2027-28</th><th class="num">Spare classrooms</th><th class="num">Small-group rooms</th><th class="num">Special ed / sensory</th><th class="num">Pull-out spaces</th><th class="num">Need</th><th class="num">Art / music room missing</th><th class="num">Short</th></tr></thead><tbody id="w-rows"></tbody></table></div>
+  <div class="col">
+  <p class="small" style="margin-top:8px">Rooms come from the district's Building Classrooms sheet (Studio GC, October 6, 2026); its "count as classroom" totals match the district's. Which squares are drawn as spare is illustrative (the smallest classrooms). With our default rule, King Arts has 13 pull-out spaces against a need of about 10. *Foster's count may be low; see item 9 above. <a class="cite" href="#r30">[30]</a></p>
+  </div>
+</div>
+<script>
+(function(){
+  var D = [{"s":"Dawes","closing":false,"rooms":[["cls","7","Classroom",775,"other"],["cls","8","Classroom",693,"other"],["cls","9","Classroom",1103,"other"],["kin","10","Classroom",978,"other"],["cls","11","Classroom",986,"other"],["cls","12","Classroom",936,"other"],["kin","13","Classroom",937,"other"],["kin","14","Classroom",978,"other"],["cls","15","Classroom",979,"other"],["svc","16","Sped/Ot",1104,"other"],["cls","19","Classroom",867,"other"],["cls","20","Classroom",854,"other"],["cls","21","Classroom",855,"other"],["cls","22","Classroom",864,"other"],["cls","23","Classroom",854,"other"],["cls","24","Classroom",844,"other"],["cls","25","Classroom",844,"other"],["cls","26","Classroom",862,"other"],["sg","27","Learn Lab",482,"other"],["sg","29","Small Group Room",194,"other"],["cls","34","Classroom",1369,"other"],["cls","A01A","Classroom",1228,"other"],["cls","A02A","Classroom",1128,"other"],["cls","A03A","Classroom",1170,"other"],["spc","A04A","Classroom",1268,"art"],["cls","A05A","Classroom",968,"other"]],"k5":[40.0,44.0,42.0,48.0,59.0,51.0],"inc":111,"sec":[2,3,2,3,3,3],"iep":72.27,"el":74.29,"n28":395},{"s":"Foster","closing":false,"rooms":[["cls","101","Classroom",850,"other"],["cls","102","Classroom",850,"other"],["cls","103","Classroom",850,"other"],["cls","104","Classroom",850,"other"],["cls","105","Classroom",850,"other"],["cls","106","Classroom",850,"other"],["cls","107","Classroom",850,"other"],["cls","108","Classroom",850,"other"],["kin","109","Classroom",1250,"other"],["kin","110","Classroom",1250,"other"],["kin","111","Classroom",1250,"other"],["kin","112","Classroom",1250,"other"],["spc","130","Stem",1250,"other"],["cls","201","Classroom",850,"other"],["cls","202","Classroom",850,"other"],["cls","203","Classroom",850,"other"],["cls","204","Classroom",850,"other"],["cls","205","Classroom",850,"other"],["cls","206","Classroom",850,"other"],["cls","207","Classroom",850,"other"],["cls","208","Classroom",850,"other"],["cls","209","Classroom",1250,"other"],["cls","210","Classroom",1250,"other"],["cls","211","Classroom",1250,"other"],["cls","212","Classroom",1250,"other"],["spc","216","Drama",0,"other"],["spc","217","Art",0,"art"],["spc","218","Multipurpose",0,"other"],["spc","219","Multipurpose",0,"other"],["spc","226","Music",0,"music"]],"k5":[46.0,42.0,64.0,77.0,57.0,71.0],"inc":90,"sec":[2,3,3,4,4,4],"iep":87.63,"el":111.53,"n28":447},{"s":"Lincoln","closing":false,"rooms":[["sg","107","Classroom",439,"other"],["sg","107B","Classroom",510,"other"],["sg","114","Classroom",322,"other"],["cls","115A","Classroom",729,"other"],["cls","115B","Classroom",810,"other"],["sg","116B","Sensory",294,"other"],["sg","117","Speach",290,"other"],["cls","118","Classroom",941,"other"],["cls","121","Classroom",980,"other"],["cls","122","Classroom",980,"other"],["cls","123","Classroom",970,"other"],["kin","124","Classroom",970,"other"],["cls","125","Classroom",970,"other"],["kin","126","Classroom",970,"other"],["cls","127","Classroom",986,"other"],["kin","128","Classroom",986,"other"],["cls","130","Classroom",933,"other"],["cls","132","Classroom",972,"other"],["cls","134","Classroom",971,"other"],["cls","136","Classroom",922,"other"],["cls","200","Classroom",667,"other"],["spc","215/216","Classroom",668,"art"],["cls","217","Classroom",878,"other"],["cls","218","Classroom",940,"other"],["sg","219","Classroom",167,"other"],["cls","221","Classroom",968,"other"],["cls","222","Classroom",968,"other"],["cls","223","Classroom",958,"other"],["cls","224","Classroom",958,"other"],["cls","225","Classroom",958,"other"],["cls","226","Classroom",958,"other"],["cls","227","Classroom",974,"other"],["cls","228","Classroom",974,"other"],["cls","230","Classroom",933,"other"],["cls","232","Classroom",941,"other"],["cls","234","Classroom",955,"other"],["cls","236","Classroom",904,"other"]],"k5":[57.0,69.0,51.0,43.0,65.0,55.0],"inc":60,"sec":[3,4,3,2,3,3],"iep":81.42,"el":59.02,"n28":400},{"s":"Oakton","closing":false,"rooms":[["cls","101","Classroom",1062,"other"],["kin","102","Classroom",882,"other"],["kin","103","Classroom",933,"other"],["svc","104","Classroom",588,"other"],["svc","105","Classroom",595,"other"],["cls","106","Classroom",713,"other"],["cls","107","Classroom",686,"other"],["cls","108","Classroom",667,"other"],["cls","109","Classroom",607,"other"],["cls","111","Classroom",678,"other"],["cls","112","Classroom",744,"other"],["cls","113","Classroom",737,"other"],["cls","114","Classroom",722,"other"],["cls","200","Classroom",732,"other"],["cls","201","Classroom",752,"other"],["cls","203","Classroom",746,"other"],["cls","204","Classroom",729,"other"],["cls","205","Classroom",668,"other"],["cls","206","Classroom",714,"other"],["cls","207","Classroom",696,"other"],["spc","208","Classroom",883,"art"],["spc","209","Classroom",603,"music"],["cls","300","Classroom",722,"other"],["cls","301","Classroom",717,"other"],["cls","302","Classroom",679,"other"],["sg","302A","Speech",280,"other"],["cls","303","Classroom",617,"other"],["cls","305","Classroom",609,"other"],["svc","306","Classroom",595,"other"],["cls","307","Classroom",608,"other"]],"k5":[68.0,55.0,58.0,54.0,68.0,63.0],"inc":51,"sec":[4,4,4,3,4,4],"iep":56.86,"el":66.27,"n28":417},{"s":"Orrington","closing":false,"rooms":[["cls","101","Classroom",794,"other"],["cls","102","Classroom",810,"other"],["sg","104","Small Group Rm",392,"other"],["svc","106","Classroom / Sensory Rm",988,"other"],["cls","108","Classroom",872,"other"],["svc","113","Sensory Rm",669,"other"],["spc","115","Classroom",0,"art"],["cls","116","Classroom",718,"other"],["kin","201","Classroom",1092,"other"],["cls","204","Classroom",697,"other"],["cls","206B","Classroom",902,"other"],["kin","207","Classroom",1085,"other"],["cls","209","Classroom",807,"other"],["cls","210","Classroom",829,"other"],["cls","301","Classroom",1093,"other"],["cls","302","Classroom",1114,"other"],["cls","303","Classroom",1046,"other"],["cls","304","Classroom",1032,"other"],["cls","305","Classroom",1101,"other"],["cls","307","Classroom",1021,"other"],["cls","308","Classroom",813,"other"],["sg","309","Classroom",511,"other"]],"k5":[40.0,35.0,41.0,52.0,26.0,54.0],"inc":26,"sec":[2,2,2,2,2,3],"iep":34.51,"el":23.18,"n28":274},{"s":"Walker","closing":false,"rooms":[["kin","101","Classroom",1019,"other"],["cls","102","Classroom",1022,"other"],["cls","103","Classroom",1012,"other"],["cls","104","Classroom",997,"other"],["cls","105","Classroom",990,"other"],["cls","106","Classroom",991,"other"],["kin","107","Classroom",1063,"other"],["cls","113","Classroom",900,"other"],["spc","113B","Classroom",656,"other"],["spc","116","Classroom",657,"art"],["cls","201","Classroom",1054,"other"],["cls","202","Classroom",1052,"other"],["cls","203","Classroom",1047,"other"],["cls","204","Classroom",1049,"other"],["cls","205","Classroom",978,"other"],["cls","206","Classroom",979,"other"],["cls","207","Classroom",978,"other"],["cls","208","Classroom",978,"other"],["cls","209","Classroom",978,"other"],["cls","210","Classroom",978,"other"]],"k5":[45.0,58.0,42.0,63.0,66.0,44.0],"inc":39,"sec":[2,3,2,3,3,2],"iep":61.77,"el":45.27,"n28":357},{"s":"Washington","closing":false,"rooms":[["cls","2","Classroom",1006,"other"],["kin","3","Classroom",959,"other"],["kin","4","Classroom",1068,"other"],["cls","5","Classroom",2154,"other"],["cls","6","Classroom",1092,"other"],["cls","7","Classroom",980,"other"],["cls","8","Classroom",1033,"other"],["sg","12","Classroom",464,"other"],["sg","22","Classroom",309,"other"],["cls","26","Classroom",905,"other"],["cls","27","Classroom",918,"other"],["cls","28","Classroom",920,"other"],["cls","29","Classroom",917,"other"],["cls","30","Classroom",908,"other"],["cls","31","Classroom",734,"other"],["cls","32","Classroom",789,"other"],["cls","33","Classroom",931,"other"],["cls","34","Classroom",743,"other"],["spc","38","Classroom",990,"art"],["cls","41","Classroom",646,"other"],["cls","46","Classroom",956,"other"],["sg","48","Classroom",252,"other"],["sg","49","Classroom",165,"other"],["cls","101","Classroom",966,"other"],["cls","102","Classroom",959,"other"],["cls","103","Classroom",981,"other"],["cls","104","Classroom",962,"other"],["cls","201","Classroom",968,"other"],["cls","202","Classroom",959,"other"],["cls","203","Classroom",980,"other"],["cls","204","Classroom",963,"other"]],"k5":[54.795,53.85,59.518,59.518,56.684,74.634],"inc":0,"sec":[4,3,3,4,4,4],"iep":73.69,"el":87.86,"n28":359},{"s":"Willard","closing":false,"rooms":[["sg","102A","Asc",560,"other"],["sg","103","Small Group",272,"other"],["cls","104","Classroom",803,"other"],["cls","106","Classroom",800,"other"],["cls","107","Classroom",711,"other"],["cls","108","Classroom",682,"other"],["cls","109","Classroom",751,"other"],["cls","110","Classroom",755,"other"],["cls","112","Classroom",930,"other"],["kin","114","Classroom",924,"other"],["cls","150","Classroom",904,"other"],["cls","152","Classroom",927,"other"],["cls","201","Classroom",791,"other"],["sg","202","Sensory",287,"other"],["cls","203","Classroom",791,"other"],["cls","204","Classroom",784,"other"],["cls","205","Classroom",767,"other"],["cls","206","Classroom",712,"other"],["cls","207","Classroom",692,"other"],["cls","208","Classroom",756,"other"],["cls","209","Classroom",730,"other"],["cls","210","Classroom",855,"other"],["cls","215","Classroom",889,"other"],["spc","B-1","Art Room",0,"art"],["spc","B-12","Music Room",753,"music"],["cls","B-4","Classroom",912,"other"],["sg","B-4B","Classroom",256,"other"],["kin","B-5","Classroom",979,"other"],["cls","B-7","Classroom",803,"other"]],"k5":[40.0,43.0,43.0,53.0,46.0,47.0],"inc":180,"sec":[2,2,2,3,2,2],"iep":61.26,"el":27.07,"n28":452},{"s":"Dewey","closing":true,"rooms":[["kin","101","Classroom",998,"other"],["cls","102","Classroom",796,"other"],["cls","103","Classroom",783,"other"],["cls","104","Classroom",796,"other"],["kin","105","Classroom",857,"other"],["cls","106","Classroom",870,"other"],["cls","107","Classroom",807,"other"],["cls","108","Classroom",794,"other"],["cls","109","Classroom",807,"other"],["kin","110","Classroom",1033,"other"],["cls","112","Classroom",881,"other"],["cls","113","Classroom",884,"other"],["cls","114","Classroom",891,"other"],["cls","115","Classroom",896,"other"],["sg","117B","Sensory",142,"other"],["sg","117C","Reading",135,"other"],["cls","200","Classroom",807,"other"],["cls","201","Classroom",788,"other"],["cls","202","Classroom",794,"other"],["cls","203","Classroom",797,"other"],["cls","205","Classroom",885,"other"],["sg","206","Classroom",333,"other"],["sg","207","Classroom",284,"other"],["cls","208","Classroom",790,"other"],["cls","209","Classroom",799,"other"],["cls","211","Classroom",799,"other"],["cls","212","Classroom",802,"other"],["cls","302","Classroom",968,"other"],["cls","303","Classroom",830,"other"],["spc","B01","Classroom",1689,"art"]],"k5":[0.0,0.0,0.0,0.0,0.0,0.0],"inc":0,"sec":[3,3,3,3,3,3],"iep":0.0,"el":0.0,"n28":0},{"s":"Lincolnwood","closing":true,"rooms":[["cls","1","Classroom",1329,"other"],["cls","2","Classroom",1334,"other"],["cls","3","Classroom",941,"other"],["cls","4","Classroom",932,"other"],["cls","5","Classroom",966,"other"],["cls","6","Classroom",934,"other"],["cls","7","Classroom",973,"other"],["cls","8","Classroom",975,"other"],["spc","15","Classroom",976,"art"],["cls","19","Classroom",1052,"other"],["cls","20","Classroom",1120,"other"],["cls","21","Classroom",957,"other"],["cls","22","Classroom",998,"other"],["cls","23","Classroom",955,"other"],["cls","24","Classroom",1000,"other"],["cls","25","Classroom",930,"other"],["cls","26","Classroom",965,"other"],["sg","28","Small Group Room",252,"other"],["cls","29","Learning Studio",812,"other"],["cls","30","Learning Studio",825,"other"],["kin","36","Classroom",1115,"other"],["kin","37","Classroom",1117,"other"],["sg","B-2","Small Group Room",408,"other"]],"k5":[0.0,0.0,0.0,0.0,0.0,0.0],"inc":0,"sec":[2,3,3,2,2,4],"iep":0.0,"el":0.0,"n28":0}];
+  var SHORT = {cls:"Classroom", kin:"Kindergarten", spare:"Spare classroom in 2027-28", svc:"Special ed / sensory (counted as classroom)", sg:"Small-group room", spc:"Specials room"};
+  var ORDER = ["cls","kin","spare","svc","sg","spc"];
+  var $ = function(id){ return document.getElementById(id); };
+  var PRESETS = {ours:{fixed:3, iep:20}, light:{fixed:2, iep:30}};
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+  function list(a){ return a.length < 2 ? a.join("") : a.slice(0,-1).join(", ") + " and " + a[a.length-1]; }
+  function opts(){
+    return {fixed:+$("w-fixed").value, iep:+$("w-iep").value, k2:+$("w-k2").value, g35:+$("w-g35").value, il:$("w-ilel").checked,
+            keep:true, useSpare:$("w-usespare").checked, spec:$("w-spec").checked};
+  }
+  function calc(b, o){
+    var c = {cls:0, kin:0, svc:0, sg:0, spc:0};
+    b.rooms.forEach(function(r){ c[r[0]]++; });
+    var r = {s:b.s, closing:b.closing, rooms:b.rooms, c:c};
+    if (b.closing) return r;
+    var classes = 0;
+    for (var i = 0; i < 6; i++) {
+      var n = Math.ceil((b.k5[i] + b.inc / 6) / (i < 3 ? o.k2 : o.g35));
+      classes += o.keep ? Math.max(b.sec[i], n) : n;
+    }
+    var core = c.cls + c.kin, spare = core - classes;
+    var x = c.sg + c.svc + (spare < 0 ? spare : (o.useSpare ? spare : 0));
+    r.classes = classes; r.core = core; r.spare = spare;
+    r.classShort = x < 0 ? -x : 0;
+    r.have = Math.max(0, x);
+    var kids = b.k5.reduce(function(a, x){ return a + x; }, 0) + b.inc;
+    r.elPer = o.il ? Math.floor(0.9 * kids / classes + 1e-9) : 50;   // 90% of this school's average class
+    r.need = o.fixed + Math.ceil(b.iep / o.iep) + Math.ceil(b.el / r.elPer);
+    r.pullShort = Math.max(0, r.need - r.have);
+    var art = 0, mus = 0, oth = 0;
+    b.rooms.forEach(function(x){ if (x[0] === "spc") { if (x[4] === "art") art++; else if (x[4] === "music") mus++; else oth++; } });
+    r.specMiss = [];
+    if (o.spec) {
+      if (!art) { if (oth) oth--; else r.specMiss.push("art room"); }
+      if (!mus) { if (oth) oth--; else r.specMiss.push("music room"); }
+    }
+    r.short = r.classShort + r.pullShort + r.specMiss.length;
+    r.gap = r.have - r.need - r.classShort;
+    return r;
+  }
+  function cells(r){
+    var rs = r.rooms.map(function(x){ return {k:x[0], room:x[1], name:x[2], sf:x[3]}; });
+    if (!r.closing) {
+      var sp = Math.max(0, r.spare);
+      rs.filter(function(x){ return x.k === "cls"; }).sort(function(a,b){ return a.sf - b.sf; })
+        .slice(0, sp).forEach(function(x){ x.k = "spare"; x.note = $("w-usespare").checked ? "" : " Not counted as pull-out space under the current settings."; });
+      if (r.spare < 0) {   // a class takes a small-group room first
+        rs.filter(function(x){ return x.k === "sg" || x.k === "svc"; }).slice(0, -r.spare)
+          .forEach(function(x){ x.k = "cls"; x.note = " Used by a regular class in 2027-28: the school runs out of classrooms."; });
+      }
+    }
+    var out = [];
+    ORDER.forEach(function(k){
+      rs.forEach(function(x){
+        if (x.k !== k) return;
+        out.push('<i class="w-' + k + '" title="' + esc(r.s + " room " + x.room + ": " + x.name + ", " + x.sf.toLocaleString() + " sq ft. " + SHORT[k] + "." + (x.note || "")) + '"></i>');
+      });
+    });
+    if (!r.closing) {
+      for (var i = 0; i < r.classShort; i++) out.push('<i class="w-miss" title="' + esc(r.s + ": one 2027-28 class with no classroom.") + '"></i>');
+      r.specMiss.forEach(function(m){ out.push('<i class="w-miss" title="' + esc(r.s + ": no " + m + " on the room sheet.") + '"></i>'); });
+      for (var j = 0; j < r.pullShort; j++) out.push('<i class="w-miss" title="' + esc(r.s + ": one pull-out space short of the need of about " + r.need + ".") + '"></i>');
+    }
+    return out.join("");
+  }
+  function card(r){
+    var star = r.s === "Foster" ? "*" : "", top;
+    if (r.closing) {
+      top = '<span class="w-stat">Closes 2027. ' + (r.c.sg + r.c.svc) + ' small-group / service rooms go with it</span>';
+    } else {
+      var big;
+      if (r.short) {
+        var parts = [];
+        if (r.pullShort) parts.push(r.pullShort + " pull-out");
+        if (r.classShort) parts.push(r.classShort + " classroom");
+        r.specMiss.forEach(function(m){ parts.push(m); });
+        big = '<span class="w-big w-low"><b class="num">' + r.short + '</b> short</span><span class="w-why">' + (parts.length > 1 || !r.pullShort ? parts.join(" + ") : "pull-out spaces") + '</span>';
+      } else {
+        big = '<span class="w-big w-ok"><b class="num">' + r.gap + '</b> ' + (r.gap ? "spare" : "short") + '</span><span class="w-why">' + (r.gap ? "pull-out spaces" : "just enough") + '</span>';
+      }
+      top = '<div class="w-sum">' + big + '</div><span class="w-stat small">Has ' + r.have + ' pull-out spaces, needs about ' + r.need + '</span>';
+    }
+    return '<div class="w-card' + (r.closing ? " w-closed" : "") + '"><div class="w-head"><h4>' + r.s + star + '</h4><span class="small num">' + r.rooms.length + ' rooms</span></div>' +
+      top + '<div class="w-grid" role="img" aria-label="' + esc(r.s + ": " + r.rooms.length + " rooms" + (r.closing ? ", closing" : ", " + r.short + " short")) + '">' + cells(r) + '</div></div>';
+  }
+  function render(){
+    var o = opts();
+    $("w-fixed-o").textContent = o.fixed; $("w-iep-o").textContent = o.iep;
+    $("w-k2-o").textContent = o.k2; $("w-g35-o").textContent = o.g35;
+    ["ours","light"].forEach(function(k){
+      var p = PRESETS[k];
+      $("w-p-" + k).setAttribute("aria-pressed", String(p.fixed === o.fixed && p.iep === o.iep));
+    });
+    document.querySelectorAll('#w-assume [data-v]').forEach(function(el){
+      var v = el.getAttribute("data-v");
+      if (v === "spare") el.textContent = o.useSpare ? "any classrooms not needed for a class" : "not spare classrooms (they're left out here)";
+      else el.textContent = o[v];
+    });
+    var rs = D.map(function(b){ return calc(b, o); }), op = rs.filter(function(r){ return !r.closing; });
+    var elv = op.map(function(r){ return r.elPer; }), elLo = Math.min.apply(null, elv), elHi = Math.max.apply(null, elv);
+    $("w-el-li").innerHTML = o.il ? '<b>English learners: the Illinois standard.</b> State rules cap English learner groups (the ESL and home-language parts of a bilingual program) at 90% of the building\'s average general-education class size for the same grades. <a class="cite" href="#r31">[31]</a> Each school\'s average 2027-28 class works out to between <b class="v">' + elLo + '</b> and <b class="v">' + elHi + '</b> English learners per EL room (90% of its average class, rounded down), rounded up to whole rooms. This counts every English learner as needing a seat in an EL room at the same time, so it is the full-staffing case; schools that schedule small groups through the day can share a room.' : '<b>English learners: our older planning rule.</b> One English learner or intervention room per <b class="v">50</b> English learners, rounded up. This is looser than the Illinois standard (check the box), which caps English learner groups at 90% of the building\'s general-education class size. <a class="cite" href="#r31">[31]</a>';
+    var specList = op.filter(function(r){ return r.specMiss.length; }).map(function(r){ return r.s + " (" + r.specMiss.join(", ").replace(/ room/g, "") + ")"; });
+    $("w-spec-li").innerHTML = o.spec ? "We expect every school to have an art room and a music room. On the room sheet, " + (specList.length ? list(specList) + (specList.length > 1 ? " have" : " has") + " none" : "every school has both") + ", so each counts as a room short (red X). An unlabeled shared specials room covers one. The sheet doesn\'t list gyms or libraries, and a music room may exist under another name, so check these locally."
+                                      : "Not counted as a need (the box is unchecked). The room sheet shows several schools with an art room but no music room.";
+    var sum = function(f){ return op.reduce(function(a, r){ return a + f(r); }, 0); };
+    var have = sum(function(r){ return r.have; }), need = sum(function(r){ return r.need; });
+    var shortT = sum(function(r){ return r.short; });
+    var sg = sum(function(r){ return r.c.sg; }), svc = sum(function(r){ return r.c.svc; });
+    var spareCount = sum(function(r){ return Math.max(0, r.spare); });
+    var spareUsed = o.useSpare ? spareCount : 0;
+    var shortSchools = op.filter(function(r){ return r.short; }).map(function(r){ return r.s; });
+    var taken = sum(function(r){ return r.spare < 0 ? Math.min(-r.spare, r.c.sg + r.c.svc) : 0; });
+    var lost = rs.filter(function(r){ return r.closing; }).reduce(function(a, r){ return a + r.c.sg + r.c.svc; }, 0);
+    $("w-lede").innerHTML = "After the closures, the eight K-5 schools that stay open have <b>" + have + " spaces for pull-out services</b> in 2027-28: " +
+      sg + " small-group rooms, " + svc + " special education or sensory rooms the sheet counts as classrooms" +
+      (o.useSpare ? ", and " + spareUsed + " classrooms no class needs" : "") +
+      (taken ? ", less " + taken + " small-group " + (taken > 1 ? "rooms" : "room") + " that a class takes over" : "") + ". Under the assumptions below they need about " + need + ". " +
+      "Only " + (sg + svc) + " are rooms set aside for small groups; Dewey and Lincolnwood take " + lost + " more with them.";
+    var noRoom = op.filter(function(r){ return r.spare < 0; }), tight = op.filter(function(r){ return r.spare === 0; });
+    var classes = sum(function(r){ return r.classes; }), core = sum(function(r){ return r.core; });
+    $("w-classes").innerHTML = "<b>Classrooms for regular classes: " + (noRoom.length ? "short at " + list(noRoom.map(function(r){ return r.s + " (" + (-r.spare) + ")"; })) : "enough at every school") + ".</b> " +
+      "The eight schools need about " + classes + " classrooms at the contract class sizes (" + o.k2 + " in K-2, " + o.g35 + " in grades 3-5) and have " + core + ". " +
+      (tight.length ? list(tight.map(function(r){ return r.s; })) + (tight.length > 1 ? " have" : " has") + " none to spare. " : "") +
+      "The most spare rooms are at " + op.slice().sort(function(a,b){ return b.spare - a.spare; })[0].s + " (" + Math.max.apply(null, op.map(function(r){ return r.spare; })) + ").";
+    $("w-total").innerHTML = shortT ? '<span class="bad">' + shortT + " rooms short</span> across " + shortSchools.length + " of 8 schools: " + list(shortSchools) + "."
+                                    : '<span class="ok">No school is short</span> under these assumptions.';
+    $("w-cards").innerHTML = rs.map(card).join("");
+    var row = function(r){ return '<tr><td>' + r.s + (r.s === "Foster" ? "*" : "") + '</td><td class="num">' + (r.spare < 0 ? r.spare : (o.useSpare ? r.spare : r.spare + " (not counted)")) + '</td><td class="num">' + r.c.sg + '</td><td class="num">' + r.c.svc +
+      '</td><td class="num"><b>' + r.have + '</b></td><td class="num">' + r.need + '</td><td class="num">' + (r.specMiss.length ? r.specMiss.join(", ").replace(/ room/g, "") : "") + '</td><td class="num">' + (r.short ? '<b style="color:var(--bad)">' + r.short + '</b>' : "0") + '</td></tr>'; };
+    $("w-rows").innerHTML = op.map(row).join("") + '<tr class="pick"><td><b>Eight K-5 schools that stay open</b></td><td class="num">' + spareCount + '</td><td class="num">' + sg + '</td><td class="num">' + svc +
+      '</td><td class="num"><b>' + have + '</b></td><td class="num">' + need + '</td><td class="num">' + sum(function(r){ return r.specMiss.length; }) + '</td><td class="num"><b>' + shortT + '</b></td></tr>';
+  }
+  function preset(k){ var p = PRESETS[k]; $("w-fixed").value = p.fixed; $("w-iep").value = p.iep; render(); }
+  ["w-fixed","w-iep","w-ilel","w-k2","w-g35","w-usespare","w-spec"].forEach(function(id){ $(id).addEventListener("input", render); $(id).addEventListener("change", render); });
+  $("w-p-ours").addEventListener("click", function(){ preset("ours"); });
+  $("w-p-light").addEventListener("click", function(){ preset("light"); });
+  render();
+})();
+</script>
+
 <details class="more" id="longterm"><summary>Dig in: every building's condition, enrollment, and the long-term bill</summary>
   <div class="col" style="margin-top:14px">
   <p>The facility condition index is the work needed from 2027 to 2033 as a share of the cost to replace the building. Higher is worse. <a class="cite" href="#r2">[2]</a> <button class="preset" type="button" id="showcap">See it on the map</button></p>
@@ -936,6 +1172,11 @@ details.more>summary{font-size:16px}
     <li id="r27">DNAinfo Chicago, "Closed CPS Schools Costing $3 Million Per Year, Report Says," June 4, 2015 (utilities, security and maintenance for about 49 closed buildings). <a href="https://www.dnainfo.com/chicago/20150604/downtown/closed-cps-schools-costing-3-million-per-year-report-says" target="_blank" rel="noopener">Link</a></li>
     <li id="r28">The Post and Courier, "5 closed schools still costly: Yearly upkeep $420,000 as district ponders uses" (utilities, insurance, maintenance, grounds and security by building). <a href="https://www.postandcourier.com/archives/closed-schools-still-costly-yearly-upkeep-as-district-ponders-uses/article_83674ed2-520f-57a0-be12-8e7adbf3e471.html" target="_blank" rel="noopener">Link</a></li>
     <li id="r29">District 65 staff directory, scraped by Legion of Data Nerds on December 19, 2025 (titles and schools for SY2025-26), with the district's fall 2026 K–5 section list. <a href="https://d65-legionofnerds.github.io/dataanalysis/staff-data.html" target="_blank" rel="noopener">Link</a></li>
+    <li id="r30">District 65 and StudioGC, "Building Classrooms" room sheet, October 6, 2026 (every room by school with its name, square footage, department and whether it counts as a classroom), with Legion of Data Nerds' "Will we fit?" analysis (2027-28 classes by school, spare classrooms, IEP and English learner counts from the October 1, 2026 enrollment dashboard).</li>
+    <li id="r31">Illinois Administrative Code, Title 23, Part 228 (Transitional Bilingual Education), Section 228.30(b)(1): the student-teacher ratio in the ESL and home language components shall not exceed 90% of the average student-teacher ratio in general education classes for the same grades in that attendance center. <a href="https://www.ilga.gov/commission/jcar/admincode/023/023002280000300R.html" target="_blank" rel="noopener">Link</a></li>
+    <li id="r32">Illinois Administrative Code, Title 23, Part 226 (Special Education), Sections 226.730 (class size: general-education classes with students with IEPs must be at least 70% students without IEPs) and 226.735 (districts must set special educator workload limits; a speech-language pathologist's caseload may not exceed 60 students).</li>
+    <li id="r33">Illinois State Board of Education, presentation on school service personnel for Senate Joint Resolution 49 (recommended ratios cited from national associations: one school psychologist per 500 students, NASP; one school social worker per 250, NASW and SSWAA). <a href="https://www.isbe.net/DocumentsPRP/SJR-49-School-Service-Personnel-Pres.pdf" target="_blank" rel="noopener">Link</a></li>
+    <li id="r34">American Speech-Language-Hearing Association, Practice Portal, "Caseload and Workload" (recommends a workload approach over a fixed caseload number; 2022 Schools Survey median caseload 48). <a href="https://www.asha.org/practice-portal/professional-issues/caseload-and-workload/" target="_blank" rel="noopener">Link</a></li>
   </ol>
   <p class="small">Every figure on this page traces to one of these sources. Where we estimate rather than report, the page says so ("our count," "our assumption") and shows the math.</p>
 </section>
