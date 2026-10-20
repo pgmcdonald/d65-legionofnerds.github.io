@@ -21,3 +21,5 @@ nav_order: 4
 **[Legion of Data Nerds: Financial Levers App Explainer]({{ 'assets/12_01_App_explainer.pdf' | relative_url }}){:target="_blank"}** *PDF* *12/01/2025*
 
 **[Legion of Data Nerds: Menu of Creative Ideas for City Cooperation]({{ '/assets/creative_ideas_menu.html' | relative_url }})** *01/14/2026*
+
+**[Legion of Data Nerds: Closing Dewey and Lincolnwood, What It Saves and What It Costs]({{ '/dataanalysis/closing-dewey-lincolnwood.html' | relative_url }})** *10/20/2026*
