@@ -204,7 +204,7 @@ section[id]{scroll-margin-top:16px}
 .tk.claim{--c:var(--muted)}.tk.bad{--c:var(--bad)}.tk.good{--c:var(--good)}.tk.warn{--c:var(--warn)}.tk.cond{--c:var(--accent);border-left-style:dashed}
 details.more{border-top:1px solid var(--rule);margin-top:16px;padding-top:10px}
 details.more>summary{font:600 15px var(--display);color:var(--accent);cursor:pointer;list-style:none}
-details.more>summary::before{content:"▸ ";display:inline-block;transition:transform .15s}
+details.more>summary::before{content:"▸";display:inline-block;width:1em;text-align:center;margin-right:.5em;transition:transform .15s}
 details.more[open]>summary::before{transform:rotate(90deg)}
 details.more>summary::-webkit-details-marker{display:none}
 details.more[open]>summary{margin-bottom:10px}
